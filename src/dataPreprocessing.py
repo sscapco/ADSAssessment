@@ -97,12 +97,14 @@ def fill_missing_values(data):
     return data
 
 # -------- Execution / main --------- #
-#data = txt_to_dataframe(path)
-#data = delete_col(data,800000)
-#data = remove_lowCor(data,0.02)
-#print(data.shape)
-#data = encode_all(data)
-#data = delete_objType(data)
-#print(data.info())
-#print(data.shape)
-#data = fill_missing_values(data)
+def output_final():
+    data = txt_to_dataframe(path)
+    data = delete_col(data,800000)
+    data = remove_lowCor(data,0.02)
+    #print(data.shape)
+    data = encode_all(data)
+    data = delete_objType(data)
+    #print(data.info())
+    #print(data.shape)
+    data = fill_missing_values(data)
+    return data
