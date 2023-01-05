@@ -33,6 +33,16 @@ def delete_objType(data):
     data1= data[colObj]
     return data1
 
+def delete_extraCols(data):
+    del data['mths_since_last_record']
+    del data['id']
+    del data['member_id']
+    del data['tot_cur_bal']
+    del data['total_rev_hi_lim']
+    del data['policy_code']
+    del data['issue_d']
+    return data
+
 # ------- Feature Engineering and Encoding ------- # 
 def encode_applicationType(data):
     data['application_type'] = np.where(data['application_type']=='INDIVIDUAL', 0, data['application_type'])
@@ -96,15 +106,21 @@ def fill_missing_values(data):
     data['Year'].fillna(data.mode()['Year'][0],inplace=True)
     return data
 
+def set_y_as_last(data,col):
+    data['last']=data[col]
+    del data[col]
+    data[col]=data['last']
+    del data['last']
+
 # -------- Execution / main --------- #
 def output_final():
     data = txt_to_dataframe(path)
     data = delete_col(data,800000)
     data = remove_lowCor(data,0.02)
-    #print(data.shape)
     data = encode_all(data)
     data = delete_objType(data)
-    #print(data.info())
-    #print(data.shape)
     data = fill_missing_values(data)
+    data = delete_extraCols(data)
+    set_y_as_last(data,'default_ind')
     return data
+    
