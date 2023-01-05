@@ -25,6 +25,14 @@ def remove_lowCor(data,n):
         del data['{}'.format(corCol2[i])]
     return data
 
+def delete_objType(data):
+    colObj=[]
+    for i in range(len(data.dtypes)):
+        if data.dtypes[i]!='object':
+            colObj.append(data.dtypes.index[i])
+    data1= data[colObj]
+    return data1
+
 # ------- Feature Engineering and Encoding ------- # 
 def encode_applicationType(data):
     data['application_type'] = np.where(data['application_type']=='INDIVIDUAL', 0, data['application_type'])
@@ -81,10 +89,20 @@ def encode_all(data):
     data = convert_lastCreditPullD(data)
     return data
 
+
+def fill_missing_values(data):
+    data['revol_util'].fillna(data['revol_util'].mean(),inplace=True)
+    data['Month'].fillna(data.mode()['Month'][0],inplace=True)
+    data['Year'].fillna(data.mode()['Year'][0],inplace=True)
+    return data
+
 # -------- Execution / main --------- #
-data = txt_to_dataframe(path)
-data = delete_col(data,800000)
-data = remove_lowCor(data,0.02)
-print(data.shape)
-data = encode_all(data)
-print(data.info())
+#data = txt_to_dataframe(path)
+#data = delete_col(data,800000)
+#data = remove_lowCor(data,0.02)
+#print(data.shape)
+#data = encode_all(data)
+#data = delete_objType(data)
+#print(data.info())
+#print(data.shape)
+#data = fill_missing_values(data)
