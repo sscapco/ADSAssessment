@@ -16,6 +16,11 @@ def splitXY(data):
     return X_train,X_test,y_train,y_test
 
 
+def evaluate(y_pred,y_test):
+    print("confusion matrix:",'\n')
+    print(confusion_matrix(y_test,y_pred))
+    print("",'\n')
+    print(classification_report(y_test,y_pred))
 
 #data = dpp.output_final()
 #X_train,X_test,y_train,y_test = splitXY(data)
