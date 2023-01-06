@@ -17,12 +17,6 @@ def predict(model,X_test):
     y_pred=model.predict(X_test)
     return(y_pred)
 
-def evaluate(y_pred,y_test):
-    print("confusion matrix:",'\n')
-    print(confusion_matrix(y_test,y_pred))
-    print("",'\n')
-    print(classification_report(y_test,y_pred))
-
 def EvaluateCV(model,X_train,y_train,cv=10):
     acc=cross_val_score(estimator=model,X=X_train,y=y_train,cv=cv)
     print(acc.mean())
