@@ -113,7 +113,7 @@ def set_y_as_last(data,col):
     del data['last']
 
 # -------- Execution / main --------- #
-def output_final():
+def output_final(path):
     data = txt_to_dataframe(path)
     data = delete_col(data,800000)
     data = remove_lowCor(data,0.02)

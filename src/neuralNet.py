@@ -38,7 +38,3 @@ def train(model,X_train,y_train,callback,epoch=20,batch_size=10,validation_split
 def predict(model,X_test):
     y_pred=model.predict(X_test)
     return(y_pred)
-
-
-
-

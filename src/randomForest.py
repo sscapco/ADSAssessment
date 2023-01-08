@@ -6,7 +6,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 
 def model(n_estimators=10,criterion='entropy'):
-    rf=RandomForestClassifier(n_estimators, criterion)
+    rf=RandomForestClassifier(n_estimators=n_estimators, criterion=criterion)
     return rf
 
 def train(model,X_train,y_train):
