@@ -26,6 +26,3 @@ def train_rf(X_train,y_train):
     model = rf.model()
     model_trained = rf.train(model,X_train,y_train)
     return model_trained
-
-
-
