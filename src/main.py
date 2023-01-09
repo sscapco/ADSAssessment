@@ -15,7 +15,7 @@ path = "C:\\Users\\qsrt\OneDrive - Capco\\Documents\\ADS\\xyz\\data\\XYZCorp_Len
 data = dpp.output_final(path)
 X_train,y_train,X_test,y_test = tr.splitXY(data)
 
-model_selection = 'nn'
+model_selection = 'aL'
 
 if (model_selection == 'rf'):
     model_trained = tr.train_rf(X_train,y_train)
@@ -25,3 +25,7 @@ elif(model_selection =='nn'):
     model_trained = tr.train_nn(X_train,y_train,batch_size=1000)
     y_pred = nn.predict(model_trained,X_test)
     tr.evaluate(y_pred.round(),y_test)
+elif(model_selection == 'aL'):
+    committee= tr.train_al(X_train,y_train,n_members=20,n_queries=50)
+    y_pred = aL.predict(committee,X_test)
+    tr.evaluate(y_pred,y_test)

@@ -5,12 +5,11 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 from modAL.models import ActiveLearner, Committee
 
-def initialise_learner(X_train,y_train,model=RandomForestClassifier()):
+def initialise_learner(X_train,y_train,n_members,model=RandomForestClassifier()):
     # generate the pool
     X_pool = X_train
     y_pool = y_train
     # initializing Committee members
-    n_members = 2
     learner_list = list()
     for member_idx in range(n_members):
         # initial training data
@@ -40,6 +39,7 @@ def query_by_committee(committee,X_pool,y_pool,X_train,y_train,n_queries=200):
     performance_history = []
     # query by committee
     for idx in range(n_queries):
+        print("query number :",idx)
         query_idx, query_instance = committee.query(X_pool)
         committee.teach(
             X=X_pool[query_idx].reshape(1, -1),
