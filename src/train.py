@@ -12,7 +12,7 @@ import activeLearning as aL
 def splitXY(data):
     X=data.iloc[:,:-1].values
     y=data.iloc[:,-1].values
-    X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.25,random_state=0)
+    X_train,y_train,X_test,y_test=train_test_split(X,y,test_size=0.25,random_state=0)
     return X_train,X_test,y_train,y_test
 
 
@@ -26,3 +26,13 @@ def train_rf(X_train,y_train):
     model = rf.model()
     model_trained = rf.train(model,X_train,y_train)
     return model_trained
+
+from sklearn.ensemble import RandomForestClassifier
+
+def model(n_estimators=10,criterion='entropy'):
+    rf=RandomForestClassifier(n_estimators=n_estimators, criterion=criterion)
+    return rf
+
+def train1(model,X_train,y_train):
+    model.fit(X_train,y_train)
+    return(model)
