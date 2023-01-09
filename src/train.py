@@ -15,7 +15,6 @@ def splitXY(data):
     X_train,y_train,X_test,y_test=train_test_split(X,y,test_size=0.25,random_state=0)
     return X_train,X_test,y_train,y_test
 
-
 def evaluate(y_pred,y_test):
     print("confusion matrix:",'\n')
     print(confusion_matrix(y_test,y_pred))
@@ -27,12 +26,9 @@ def train_rf(X_train,y_train):
     model_trained = rf.train(model,X_train,y_train)
     return model_trained
 
-from sklearn.ensemble import RandomForestClassifier
-
-def model(n_estimators=10,criterion='entropy'):
-    rf=RandomForestClassifier(n_estimators=n_estimators, criterion=criterion)
-    return rf
-
-def train1(model,X_train,y_train):
-    model.fit(X_train,y_train)
-    return(model)
+def train_nn(X_train,y_train,optimizer='Adam',loss='binary_crossentropy',metrics='Accuracy',monitor= 'val_accuracy',mode='max',patience=10,weights=True,epoch=10,batch_size=10,validation_split=0.2):
+    model = nn.model_layers(X_train)
+    model = nn.model_compilation(model,optimizer=optimizer,loss=loss,metrics=metrics)
+    es    = nn.earlyStopping(monitor=monitor,mode=mode,patience=patience,weights=weights)
+    model_trained = nn.train(model,X_train,y_train,es,epoch=epoch,batch_size=batch_size,validation_split=validation_split)
+    return model_trained

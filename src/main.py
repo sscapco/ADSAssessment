@@ -10,15 +10,18 @@ import neuralNet as nn
 import activeLearning as aL
 import train as tr
 
-
 path = "C:\\Users\\qsrt\OneDrive - Capco\\Documents\\ADS\\xyz\\data\\XYZCorp_LendingData.txt"
 
 data = dpp.output_final(path)
 X_train,y_train,X_test,y_test = tr.splitXY(data)
 
-model_selection = 'rf'
+model_selection = 'nn'
 
 if (model_selection == 'rf'):
     model_trained = tr.train_rf(X_train,y_train)
     y_pred = rf.predict(model_trained,X_test)
     tr.evaluate(y_pred,y_test)
+elif(model_selection =='nn'):
+    model_trained = tr.train_nn(X_train,y_train,batch_size=1000)
+    y_pred = nn.predict(model_trained,X_test)
+    tr.evaluate(y_pred.round(),y_test)
