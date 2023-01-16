@@ -6,50 +6,40 @@ from sklearn.metrics import accuracy_score
 from modAL.models import ActiveLearner, Committee
 
 def initialise_learner(X_train,y_train,n_members,model=RandomForestClassifier()):
+    n_labeled_examples = X_train.shape[0]
+    training_indices = np.random.randint(low=0,high=n_labeled_examples+1,size=n_members)
     # generate the pool
-    X_pool = X_train
-    y_pool = y_train
+    X_raw = X_train
+    y_raw = y_train
+    X_init = X_raw[training_indices]
+    Y_init = y_raw[training_indices]
+    X_pool = np.delete(X_raw,training_indices,axis=0)
+    y_pool = np.delete(y_raw,training_indices,axis=0)
     # initializing Committee members
-    learner_list = list()
-    for member_idx in range(n_members):
-        # initial training data
-        n_initial = 2
-        train_idx = np.random.choice(range(X_pool.shape[0]), size=n_initial, replace=False)
-        X_Train = X_pool[train_idx]
-        y_Train = y_pool[train_idx]
-        # creating a reduced copy of the data with the known instances removed
-        X_pool = np.delete(X_pool, train_idx, axis=0)
-        y_pool = np.delete(y_pool, train_idx)
-        # initializing learner
-        learner = ActiveLearner(estimator=model,
-                            X_training=X_Train, y_training=y_Train
-                            )
-        learner_list.append(learner)
-    return learner_list,X_pool,y_pool
+    learner = ActiveLearner(estimator=model,X_training=X_init, y_training=Y_init)
+    return learner,X_pool,y_pool
 
 def assembling_committee(learner_list):
     committee = Committee(learner_list=learner_list)
     return committee
 
-def unqueried_score(X_train,y_train,committee):
-    unqueried_score = committee.score(X_train,y_train)
-    print(unqueried_score)
+def unqueried_score(X_train,y_train,learner):
+    c = learner.predict(X_train)
+    unqueried_score = accuracy_score(y_train,c)
+    return(unqueried_score)
 
-def query_by_committee(committee,X_pool,y_pool,X_train,y_train,n_queries=200):
+def query_by_committee(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=200):
+    perf_his = [unqueried_score]
+    for index in range(n_queries):
+        query_index, query_instance = learner.query(X_pool)
+        X,y = X_pool[query_index].reshape(1,-1),y_pool[query_index].reshape(1,)
+        learner.teach(X=X,y=y)
+        X_pool,y_pool =np.delete(X_pool,query_index,axis=0),np.delete(y_pool,query_index)
+        model_acc = learner.score(X_train,y_train)
+        print("accuracy after "+str(index)+" Queries :"+str(model_acc))
+        perf_his.append(model_acc)
     performance_history = []
-    # query by committee
-    for idx in range(n_queries):
-        print("query number :",idx)
-        query_idx, query_instance = committee.query(X_pool)
-        committee.teach(
-            X=X_pool[query_idx].reshape(1, -1),
-            y=y_pool[query_idx].reshape(1, )
-        )
-        performance_history.append(committee.score(X_train,y_train))
-        # remove queried instance from pool
-        X_pool = np.delete(X_pool, query_idx, axis=0)
-        y_pool = np.delete(y_pool, query_idx)
-    return committee, performance_history,X_pool,y_pool
+    return learner, performance_history,X_pool,y_pool
 
 def predict(committee,X_test):
     return committee.predict(X_test)

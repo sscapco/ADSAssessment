@@ -35,7 +35,8 @@ def train_nn(X_train,y_train,optimizer='Adam',loss='binary_crossentropy',metrics
     return model_trained
 
 def train_al(X_train,y_train,n_members,n_queries,model=RandomForestClassifier()):
-    learner_list,X_pool,y_pool = aL.initialise_learner(X_train,y_train,n_members,model=model)
-    committee = aL.assembling_committee(learner_list)
-    committee, performance_history,X_pool,y_pool = aL.query_by_committee(committee,X_pool,y_pool,X_train,y_train,n_queries=n_queries)
-    return committee
+    learner,X_pool,y_pool = aL.initialise_learner(X_train,y_train,n_members,model=model)
+    unqueried_score = aL.unqueried_score(X_train,y_train,learner)
+    #committee = aL.assembling_committee(learner_list)
+    learner, performance_history,X_pool,y_pool = aL.query_by_committee(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=n_queries)
+    return learner

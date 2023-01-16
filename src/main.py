@@ -26,6 +26,6 @@ elif(model_selection =='nn'):
     y_pred = nn.predict(model_trained,X_test)
     tr.evaluate(y_pred.round(),y_test)
 elif(model_selection == 'aL'):
-    committee= tr.train_al(X_train,y_train,n_members=20,n_queries=50)
+    committee= tr.train_al(X_train,y_train,n_members=20,n_queries=30)
     y_pred = aL.predict(committee,X_test)
     tr.evaluate(y_pred,y_test)
