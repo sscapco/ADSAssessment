@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, classification_report, roc_curve
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
 import dataPreprocessing as dpp
 import randomForest as rf
 import neuralNet as nn
@@ -21,6 +22,15 @@ def evaluate(y_pred,y_test):
     print(confusion_matrix(y_test,y_pred))
     print("",'\n')
     print(classification_report(y_test,y_pred))
+
+def ROC_plot(model,X_test,y_test):
+    y_pred_proba = model.predict_proba(X_test)[::,1]
+    fpr, tpr, _ = roc_curve(y_test,  y_pred_proba)
+    #create ROC curve
+    plt.plot(fpr,tpr)
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.show()
 
 def train_rf(X_train,y_train):
     model = rf.model()
