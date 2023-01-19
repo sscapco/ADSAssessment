@@ -27,11 +27,10 @@ def train_rf(X_train,y_train):
     model_trained = rf.train(model,X_train,y_train)
     return model_trained
 
-def train_nn(X_train,y_train,optimizer='Adam',loss='binary_crossentropy',metrics='Accuracy',monitor= 'val_accuracy',mode='max',patience=10,weights=True,epoch=10,batch_size=10,validation_split=0.2):
+def train_nn(X_train,y_train,optimizer='Adam',loss='binary_crossentropy',metrics='Accuracy',monitor= 'val_accuracy',mode='max',weights=True,epoch=50,batch_size=32,validation_split=0.2):
     model = nn.model_layers(X_train)
     model = nn.model_compilation(model,optimizer=optimizer,loss=loss,metrics=metrics)
-    es    = nn.earlyStopping(monitor=monitor,mode=mode,patience=patience,weights=weights)
-    model_trained = nn.train(model,X_train,y_train,es,epoch=epoch,batch_size=batch_size,validation_split=validation_split)
+    model_trained = nn.train(model,X_train,y_train,epoch=epoch,batch_size=batch_size,validation_split=validation_split)
     return model_trained
 
 def train_al(X_train,y_train,n_members,n_queries,model=RandomForestClassifier()):
