@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.metrics import confusion_matrix, classification_report, roc_curve
+from sklearn.metrics import confusion_matrix, classification_report, roc_curve,roc_auc_score
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -31,6 +31,8 @@ def ROC_plot(model,X_test,y_test):
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
     plt.show()
+    #print ROC Score
+    print('\n',"ROC_AUC_SCORE :",roc_auc_score(y_test, y_pred_proba))
 
 def train_rf(X_train,y_train):
     model = rf.model()

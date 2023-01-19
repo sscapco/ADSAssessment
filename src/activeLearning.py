@@ -44,3 +44,16 @@ def query_by_committee(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_q
 def predict(committee,X_test):
     return committee.predict(X_test)
 
+def random_query(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=200):
+    perf_his = [unqueried_score]
+    for index in range(n_queries):
+        query_index = np.random.choice(range(X_pool.shape[0]), replace=False)
+        #query_index, query_instance = learner.query(X_pool)
+        X,y = X_pool[query_index].reshape(1,-1),y_pool[query_index].reshape(1,)
+        learner.teach(X=X,y=y)
+        X_pool,y_pool =np.delete(X_pool,query_index,axis=0),np.delete(y_pool,query_index)
+        model_acc = learner.score(X_train,y_train)
+        print("accuracy after "+str(index)+" Queries :"+str(model_acc))
+        perf_his.append(model_acc)
+    performance_history = []
+    return learner, performance_history,X_pool,y_pool
