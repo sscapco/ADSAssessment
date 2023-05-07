@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = "C:\\Users\\qsrt\OneDrive - Capco\\Documents\\ADS\\xyz\\data\\XYZCorp_LendingData.txt"
-
 def txt_to_dataframe(path):
     data = pd.read_table(path,parse_dates=['issue_d'],low_memory=False)
     return data
