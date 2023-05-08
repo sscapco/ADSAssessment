@@ -13,8 +13,8 @@ def delete_col(data,N):
             del data['{}'.format(colRec.index[i])]
     return data
 
-def remove_lowCor(data,n):
-    corCol = data[data.columns].corr()['default_ind'][:]
+def remove_lowCor(data,n,col='default_ind'):
+    corCol = data[data.columns].corr()[col][:]
     corCol2=[]
     for i in range(len(corCol)):
         if corCol[i]<n and corCol[i]>(-1*n):
@@ -111,14 +111,14 @@ def set_y_as_last(data,col):
     del data['last']
 
 # -------- Execution / main --------- #
-def output_final(path):
+def output_final(path,col='default_ind'):
     data = txt_to_dataframe(path)
     data = delete_col(data,800000)
-    data = remove_lowCor(data,0.02)
+    data = remove_lowCor(data,0.02,col)
     data = encode_all(data)
     data = delete_objType(data)
     data = fill_missing_values(data)
     data = delete_extraCols(data)
-    set_y_as_last(data,'default_ind')
+    set_y_as_last(data,col)
     return data
     

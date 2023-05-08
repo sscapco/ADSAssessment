@@ -17,6 +17,12 @@ def splitXY(data):
     X_train,y_train,X_test,y_test=train_test_split(X,y,test_size=0.25,random_state=42)
     return X_train,X_test,y_train,y_test
 
+def prep_reg_data(data):
+    df = data.replace ([np.inf,-np.inf],np.nan)
+    df = df.fillna(1e9)
+    X_train,y_train,X_test,y_test = splitXY(df)
+    return X_train,y_train,X_test,y_test
+
 def evaluate(y_pred,y_test):
     print("confusion matrix:",'\n')
     print(confusion_matrix(y_test,y_pred))

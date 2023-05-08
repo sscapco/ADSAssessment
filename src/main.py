@@ -9,13 +9,18 @@ import randomForest as rf
 import neuralNet as nn
 import activeLearning as aL
 import train as tr
+import regression as reg
 
 path = "C:\\Users\\qsrt\OneDrive - Capco\\Documents\\ADS\\xyz\\data\\XYZCorp_LendingData.txt"
+model_selection = 'reg'
 
-data = dpp.output_final(path)
-X_train,y_train,X_test,y_test = tr.splitXY(data)
+if model_selection =='reg':
+    data= dpp.output_final(path,'int_rate')
+    X_train,y_train,X_test,y_test = tr.prep_reg_data(data)
+else:
+    data = dpp.output_final(path)
+    X_train,y_train,X_test,y_test = tr.splitXY(data)
 
-model_selection = 'rf'
 
 if (model_selection == 'rf'):
     model_trained = tr.train_rf(X_train,y_train)
@@ -31,3 +36,7 @@ elif(model_selection == 'aL'):
     committee= tr.train_al(X_train,y_train,n_members=20,n_queries=30)
     y_pred = aL.predict(committee,X_test)
     tr.evaluate(y_pred,y_test)
+elif(model_selection == 'reg'):
+    model_trained = reg.model_train(X_train,y_train)
+    y_pred = reg.predict(model_trained,X_test)
+    reg.evaluate(y_test,y_pred)
