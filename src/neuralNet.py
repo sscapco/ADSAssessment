@@ -5,6 +5,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.callbacks import EarlyStopping
 from modAL.models import ActiveLearner, Committee
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
 
 def model_layers(X):
     # build the neural network model
@@ -31,3 +33,12 @@ def train(model,X_train,y_train,epoch=10,batch_size=10,validation_split=0.2):
 def predict(model,X_test):
     y_pred=model.predict(X_test)
     return(y_pred)
+
+def roc(y_pred,y_test):
+    fpr_keras, tpr_keras, thresholds_keras = roc_curve(y_test,y_pred)
+    auc_keras = auc(fpr_keras, tpr_keras)
+    plt.plot(fpr_keras, tpr_keras, label='Keras (area = {:.3f})'.format(auc_keras))
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.show()
+
