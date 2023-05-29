@@ -57,3 +57,9 @@ def train_al(X_train,y_train,n_members,n_queries,model=RandomForestClassifier())
     #committee = aL.assembling_committee(learner_list)
     learner, performance_history,X_pool,y_pool = aL.query_by_committee(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=n_queries)
     return learner
+
+def train_al_random(X_train,y_train,n_members,n_queries,model=RandomForestClassifier()):
+    learner,X_pool,y_pool = aL.initialise_learner(X_train,y_train,n_members,model=model)
+    unqueried_score = aL.unqueried_score(X_train,y_train,learner)
+    learner, performance_history,X_pool,y_pool = aL.random_query(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=n_queries)
+    return learner

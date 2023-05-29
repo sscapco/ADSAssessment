@@ -12,14 +12,14 @@ import train as tr
 import regression as reg
 
 path = "C:\\Users\\qsrt\OneDrive - Capco\\Documents\\ADS\\xyz\\data\\XYZCorp_LendingData.txt"
-model_selection = 'rf'
+model_selection = 'reg'
 
 if model_selection =='reg':
     data= dpp.output_final(path,'int_rate')
     X_train,y_train,X_test,y_test = tr.prep_reg_data(data)
 else:
     data = dpp.output_final(path)
-    X_train,y_train,X_test,y_test = tr.splitXY(data,random_state=700)
+    X_train,y_train,X_test,y_test = tr.splitXY(data,random_state=42)
 
 
 if (model_selection == 'rf'):
@@ -33,7 +33,8 @@ elif(model_selection =='nn'):
     tr.evaluate(y_pred.round(),y_test)
     nn.roc(y_pred,y_test)
 elif(model_selection == 'aL'):
-    committee= tr.train_al(X_train,y_train,n_members=20,n_queries=30)
+    committee= tr.train_al(X_train,y_train,n_members=20,n_queries=120)
+    #committee= tr.train_al_random(X_train,y_train,n_members=20,n_queries=120)
     y_pred = aL.predict(committee,X_test)
     tr.evaluate(y_pred,y_test)
 elif(model_selection == 'reg'):
