@@ -22,6 +22,20 @@ def model_compilation(model,optimizer='Adam',loss='binary_crossentropy',metrics=
     return model
 
 def train(model,X_train,y_train,epoch=10,batch_size=10,validation_split=0.2):
+    """
+    Uses ML model and train data for training.
+    -------
+    Parameter
+    model: sci-kit lean model for neural nets.
+    X_train: train features data.
+    y_train: train labels data.
+    epoch: 
+    batch size:
+    validaton_split:
+    --------
+    Returns
+    model: trained model.
+    """
     model.fit(X_train,
             y_train,
             epochs=epoch, # you can set this to a big number!
@@ -31,10 +45,28 @@ def train(model,X_train,y_train,epoch=10,batch_size=10,validation_split=0.2):
     return model
 
 def predict(model,X_test):
+    """
+    Uses ML model and test data to predict labels.
+    -------
+    Parameter
+    model: sci-kit lean model for neual nets.
+    X_test: test data.
+    --------
+    Returns
+    y_pred: array containing labels for predictions
+    """
     y_pred=model.predict(X_test)
     return(y_pred)
 
 def roc(y_pred,y_test):
+    """
+    Takes predicted values and real values to plot ROC curve.
+    -------
+    Parameter
+    y_pred: predicted labels.
+    y_test: actual labels.
+    --------
+    """
     fpr_keras, tpr_keras, thresholds_keras = roc_curve(y_test,y_pred)
     auc_keras = auc(fpr_keras, tpr_keras)
     plt.plot(fpr_keras, tpr_keras, label='Keras (area = {:.3f})'.format(auc_keras))

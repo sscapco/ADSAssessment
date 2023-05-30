@@ -10,13 +10,46 @@ def model(n_estimators=10,criterion='entropy'):
     return rf
 
 def train(model,X_train,y_train):
+    """
+    Uses ML model and train data for training.
+    -------
+    Parameter
+    model: sci-kit lean model for random forest.
+    X_train: train features data.
+    y_train: train labels data.
+    --------
+    Returns
+    model: trained model.
+    """
     model.fit(X_train,y_train)
     return(model)
 
 def predict(model,X_test):
+    """
+    Uses ML model and test data to predict labels.
+    -------
+    Parameter
+    model: sci-kit lean model for random forest.
+    X_test: test data/
+    --------
+    Returns
+    y_pred: array containing labels for predictions
+    """
     y_pred=model.predict(X_test)
     return(y_pred)
 
 def EvaluateCV(model,X_train,y_train,cv=10):
+    """
+    Uses ML model and train data for training using cross-validations.
+    -------
+    Parameter
+    model: sci-kit lean model for random forest.
+    X_train: train features data.
+    y_train: train labels data.
+    cv: number of cross validations / splits.
+    --------
+    Returns
+    acc: returns the validation accuracry score.
+    """
     acc=cross_val_score(estimator=model,X=X_train,y=y_train,cv=cv)
     print(acc.mean())
