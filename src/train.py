@@ -98,12 +98,30 @@ def train_rf(X_train,y_train):
     return model_trained
 
 def train_nn(X_train,y_train,optimizer='Adam',loss='binary_crossentropy',metrics='Accuracy',monitor= 'val_accuracy',mode='max',weights=True,epoch=50,batch_size=32,validation_split=0.2):
+    """
+    Uses functions from neuralNet.py to ouput trained model.
+    -------
+    Parameter
+    refer to neuralNet.py
+    --------
+    Returns
+    model: trained model.
+    """
     model = nn.model_layers(X_train)
     model = nn.model_compilation(model,optimizer=optimizer,loss=loss,metrics=metrics)
     model_trained = nn.train(model,X_train,y_train,epoch=epoch,batch_size=batch_size,validation_split=validation_split)
     return model_trained
 
 def train_al(X_train,y_train,n_members,n_queries,model=RandomForestClassifier()):
+    """
+    Uses functions from activeLearning.py to ouput trained model for active queries.
+    -------
+    Parameter
+    refer to activeLearning.py
+    --------
+    Returns
+    model: trained model.
+    """
     learner,X_pool,y_pool = aL.initialise_learner(X_train,y_train,n_members,model=model)
     unqueried_score = aL.unqueried_score(X_train,y_train,learner)
     #committee = aL.assembling_committee(learner_list)
@@ -111,6 +129,15 @@ def train_al(X_train,y_train,n_members,n_queries,model=RandomForestClassifier())
     return learner
 
 def train_al_random(X_train,y_train,n_members,n_queries,model=RandomForestClassifier()):
+    """
+    Uses functions from activeLearning.py to ouput trained model for random queries.
+    -------
+    Parameter
+    refer to activeLearning.py
+    --------
+    Returns
+    model: trained model.
+    """
     learner,X_pool,y_pool = aL.initialise_learner(X_train,y_train,n_members,model=model)
     unqueried_score = aL.unqueried_score(X_train,y_train,learner)
     learner, performance_history,X_pool,y_pool = aL.random_query(learner,X_pool,y_pool,X_train,y_train,unqueried_score,n_queries=n_queries)

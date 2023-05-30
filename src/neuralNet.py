@@ -9,6 +9,15 @@ from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 
 def model_layers(X):
+    """
+    Defines Neural Net architechture.
+    -------
+    Parameter
+    X: X_train matrix.
+    --------
+    Returns
+    model: Neural Net pre-defined model.
+    """
     # build the neural network model
     model = Sequential()
     model.add(Dense((X.shape[1]+1)//2, input_shape=(X.shape[1],), activation='relu')) # Add an input shape! (features,)
@@ -17,6 +26,19 @@ def model_layers(X):
     return model
 
 def model_compilation(model,optimizer='Adam',loss='binary_crossentropy',metrics='Accuracy'):
+    """
+    Keras compilation API.
+    For more info visit page: https://keras.io/api/models/model_training_apis/
+    -------
+    Parameter
+    model: Neural-network model architechture.
+    optimizer: optimization algorithm.
+    loss: Loss function.
+    metrics: Metrics to be evaluated during model training.
+    --------
+    Returns
+    rf: Random Forest pre-defined model.
+    """
     # compile the model
     model.compile(optimizer=optimizer, loss=loss, metrics=[metrics])
     return model
@@ -24,14 +46,15 @@ def model_compilation(model,optimizer='Adam',loss='binary_crossentropy',metrics=
 def train(model,X_train,y_train,epoch=10,batch_size=10,validation_split=0.2):
     """
     Uses ML model and train data for training.
+    For more info visit page: https://keras.io/api/models/model_training_apis/
     -------
     Parameter
     model: sci-kit lean model for neural nets.
     X_train: train features data.
     y_train: train labels data.
-    epoch: 
-    batch size:
-    validaton_split:
+    epoch: Number of epoch to train the model (Epoch is an iteration over the entire X and y provided).
+    batch size: Number of samples per gradient update.
+    validaton_split: Fraction of training data to be used as validation data.
     --------
     Returns
     model: trained model.

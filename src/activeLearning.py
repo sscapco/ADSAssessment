@@ -34,6 +34,16 @@ def initialise_learner(X_train,y_train,n_members,model=RandomForestClassifier())
     return learner,X_pool,y_pool
 
 def assembling_committee(learner_list):
+    """
+    Defines active learning object.
+    For more info visit: https://modal-python.readthedocs.io/en/latest/content/examples/query_by_committee.html.
+    -------
+    Parameter
+    learner_list: sci-kit learn model for random forest.
+    --------
+    Returns
+    committee: active learning query object.
+    """
     committee = Committee(learner_list=learner_list)
     return committee
 

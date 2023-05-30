@@ -6,6 +6,17 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 
 def model(n_estimators=10,criterion='entropy'):
+    """
+    Defines Random fororest as model.
+    For more info visit page: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+    -------
+    Parameter
+    n_estimators: number of trees in forest.
+    criterion: Decision tree splitting measure.
+    --------
+    Returns
+    rf: Random Forest pre-defined model.
+    """
     rf=RandomForestClassifier(n_estimators=n_estimators, criterion=criterion)
     return rf
 
